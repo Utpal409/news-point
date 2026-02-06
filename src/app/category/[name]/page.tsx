@@ -18,10 +18,10 @@ export default async function CategoryPage({ params }: { params: Promise<{ name:
     const { name } = await params;
     const categoryName = name.charAt(0).toUpperCase() + name.slice(1);
 
-    // Fetch only articles for this category using ORDS filtering
-    // ORDS Query format: ?q={"category":"Tech"}
-    const filter = JSON.stringify({ category: categoryName });
-    const articles = await executeQuery(`news_articles?q=${encodeURIComponent(filter)}`) as Article[];
+    // Fetch articles from the view which joins Categories and Articles
+    // Filter by the URL parameter 'name' against the 'category_slug' column
+    const filter = JSON.stringify({ category_slug: name.toLowerCase() });
+    const articles = await executeQuery(`news_articles_v?q=${encodeURIComponent(filter)}`) as Article[];
 
     return (
         <div className="min-h-screen flex flex-col bg-white">
@@ -45,6 +45,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ name:
                                 <Link href={`/article/${article.slug}`}>
                                     <div className="aspect-[16/10] bg-gray-100 mb-4 overflow-hidden relative">
                                         {article.image_url && (
+                                            /* eslint-disable-next-line @next/next/no-img-element */
                                             <img src={article.image_url} alt={article.title} className="w-full h-full object-cover transition-transform group-hover:scale-105 duration-500" />
                                         )}
                                     </div>

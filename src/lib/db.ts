@@ -3,7 +3,7 @@
  * Pure REST - No Wallet needed.
  */
 
-const ORDS_BASE_URL = "https://gb3e6b16544f98d-m2.adb.ap-hyderabad-1.oraclecloudapps.com/ords/utpal/";
+const ORDS_BASE_URL = process.env.ORDS_BASE_URL || "https://gb3e6b16544f98d-m2.adb.ap-hyderabad-1.oraclecloudapps.com/ords/utpal/";
 
 export async function executeQuery(tableName: string, params?: Record<string, string>) {
     if (!ORDS_BASE_URL) {
